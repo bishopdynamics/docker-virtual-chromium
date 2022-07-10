@@ -1,0 +1,32 @@
+
+# Example config for virtual chromium
+
+version: '3.2'
+
+services:
+  docker_virtual_chromium:
+    image: bishopdynamics/docker_virtual_chromium:latest
+    container_name: docker_virtual_chromium
+    build: .
+    ports:
+      - "5901:5900" # vnc server
+      - "9201:9222" # chromium debugging
+    environment:
+      - URL="http://wikipedia.com"  # url to load chromium with
+      - WINDOW_WIDTH="800"  # Window Width
+      - WINDOW_HEIGHT="600"  # Window Height
+      - SCALE="1.0"  # scale for chromium to render pages
+      - EXTRA_CHROMIUM_ARGS=""  # additional arguments to pass chromium
+      - CHROMIUM_DEBUG_PORT="9222"  # port for chromium remote developer tools
+      - VNC_PASSWORD=badpass  # vnc password
+      - VNC_PORT=5900  # vnc port
+      - EXTRA_VNC_ARGS=  # additional arguments for x11vnc
+      - EXTRA_X_ARGS=  # additional arguments for X server
+      - PUID=1000  # User ID
+      - PGID=1000  # Group ID
+      - VIRTUAL_VRAM=192000  # need more vram for higher resolutions
+      - REFRESH_RATE=60  # hz, refresh rate, probably should stick with 60
+    shm_size: '1gb'
+    privileged: true
+    volumes:
+      - /storage/Config/vnc-kiosk:/config
